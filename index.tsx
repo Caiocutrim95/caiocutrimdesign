@@ -1,0 +1,1 @@
+// Este arquivo foi descontinuado em favor do index.html estático para garantir compatibilidade total com o GitHub Pages.
