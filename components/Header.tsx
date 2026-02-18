@@ -1,65 +1,104 @@
 
 import React, { useState, useEffect } from 'react';
+import { ViewState } from '../types';
+import { SOCIAL_LINKS } from '../constants';
+import Logo from './Logo';
+import { Menu, X } from 'lucide-react';
 
-const Header: React.FC = () => {
-  const [scrolled, setScrolled] = useState(false);
+interface HeaderProps {
+  setView: (v: ViewState) => void;
+  currentView: ViewState;
+}
+
+const Header: React.FC<HeaderProps> = ({ setView, currentView }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <header className={`fixed top-6 left-1/2 -translate-x-1/2 z-[80] transition-all duration-500 w-[90%] max-w-5xl`}>
-      <div className={`cartoon-card bg-slate-900/90 backdrop-blur-xl py-3 px-8 flex items-center justify-between ${scrolled ? 'scale-95' : 'scale-100'}`}>
-        <div className="flex items-center gap-4 cursor-pointer group" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-          {/* Novo Ícone de Logo Estilizado */}
-          <div className="relative logo-animate">
-            <div className="w-12 h-12 bg-indigo-600 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000] flex items-center justify-center logo-spin overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
-                <svg className="w-8 h-8 text-[#adff00] drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 8L4 12L8 16M16 8L20 12L16 16M13.5 6L10.5 18" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <div className="absolute bottom-0 w-full h-1 bg-[#adff00] opacity-30 animate-pulse"></div>
-            </div>
-            {/* Elemento de Aura Energética */}
-            <div className="absolute -inset-1 bg-indigo-500/20 rounded-2xl blur-sm -z-10 group-hover:bg-indigo-500/40 transition-all"></div>
-          </div>
-
-          <div className="flex flex-col">
-            <span className="text-xl font-black tracking-tighter text-white uppercase leading-none">
-              Caio <span className="text-[#adff00]">Cutrim</span>
-            </span>
-            <span className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em] mt-0.5">Fullstack Architect</span>
-          </div>
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out`}
+    >
+      <div className={`w-full flex items-center justify-between px-[5%] transition-all duration-500 border-b border-white/10 glass 
+        ${isScrolled ? 'py-3 bg-slate-950/90 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.4)]' : 'py-6 bg-white/5 backdrop-blur-2xl'}`}
+      >
+        <div 
+          onClick={() => { setView('home'); setMobileMenuOpen(false); }}
+          className="cursor-pointer transition-transform duration-300 hover:scale-105"
+        >
+          <Logo />
         </div>
 
-        <nav className="hidden md:flex items-center gap-8">
-          {[
-            { label: 'Poderes', href: '#skills' },
-            { label: 'Packs', href: '#professional-plans' },
-            { label: 'Cases', href: '#cases' }
-          ].map((item) => (
-            <a 
-              key={item.label}
-              href={item.href} 
-              className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-[#adff00] hover:scale-110 transition-all relative group"
-            >
-              {item.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-1 bg-[#adff00] border border-black transition-all group-hover:w-full"></span>
-            </a>
-          ))}
+        {/* Desktop Nav */}
+        <nav className="hidden lg:flex items-center gap-12 font-bold text-[11px] tracking-[0.2em] uppercase">
+          <button 
+            onClick={() => setView('home')}
+            className={`relative py-2 transition-all hover:text-orange-400 group ${currentView === 'home' ? 'text-orange-500' : 'text-slate-300'}`}
+          >
+            Início
+            <span className={`absolute bottom-0 left-0 h-[2px] bg-orange-500 transition-all duration-300 ease-out ${currentView === 'home' ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+          </button>
+          
+          <button 
+            onClick={() => setView('niches')}
+            className={`relative py-2 transition-all hover:text-orange-400 group ${currentView === 'niches' ? 'text-orange-500' : 'text-slate-300'}`}
+          >
+            Ver Nichos
+            <span className={`absolute bottom-0 left-0 h-[2px] bg-orange-500 transition-all duration-300 ease-out ${currentView === 'niches' ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+          </button>
+
+          <a 
+            href={SOCIAL_LINKS.googleMaps} 
+            target="_blank" 
+            className="text-slate-300 hover:text-orange-400 transition-all py-2 relative group"
+          >
+            Localização
+            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-orange-500 transition-all duration-300 group-hover:w-full" />
+          </a>
+          
+          <a 
+            href={SOCIAL_LINKS.instagram} 
+            target="_blank" 
+            className="text-slate-300 hover:text-orange-400 transition-all py-2 relative group"
+          >
+            Instagram
+            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-orange-500 transition-all duration-300 group-hover:w-full" />
+          </a>
         </nav>
 
-        <a 
-          href="https://wa.me/98984629959" 
-          target="_blank" 
-          className="cartoon-btn bg-[#adff00] text-black px-6 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white transition-colors flex items-center gap-2"
-        >
-          <span>Zap Direto</span>
-          <span className="animate-bounce">🚀</span>
-        </a>
+        <div className="flex items-center gap-6">
+          <a 
+            href={SOCIAL_LINKS.whatsapp}
+            target="_blank"
+            className="hidden sm:block bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-xl font-black text-[10px] tracking-[0.2em] uppercase transition-all shadow-[0_10px_20px_rgba(249,115,22,0.2)] active:scale-95"
+          >
+            Solicitar Projeto
+          </a>
+          
+          {/* Mobile Toggle */}
+          <button 
+            className="lg:hidden text-white p-2 glass rounded-full"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <div className={`lg:hidden fixed inset-0 z-[-1] bg-slate-950/98 backdrop-blur-2xl flex flex-col items-center justify-center gap-8 transition-all duration-500 ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'}`}>
+          <button onClick={() => { setView('home'); setMobileMenuOpen(false); }} className="text-2xl font-black tracking-widest text-white uppercase">Início</button>
+          <button onClick={() => { setView('niches'); setMobileMenuOpen(false); }} className="text-2xl font-black tracking-widest text-white uppercase">Ver Nichos</button>
+          <a href={SOCIAL_LINKS.googleMaps} target="_blank" className="text-2xl font-black tracking-widest text-white uppercase">Localização</a>
+          <a href={SOCIAL_LINKS.instagram} target="_blank" className="text-2xl font-black tracking-widest text-white uppercase">Instagram</a>
+          <a href={SOCIAL_LINKS.whatsapp} target="_blank" className="mt-8 bg-orange-500 px-10 py-5 rounded-2xl font-black text-white">FALAR AGORA</a>
       </div>
     </header>
   );

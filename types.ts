@@ -1,20 +1,21 @@
 
-export interface Message {
+export interface PackageItem {
   id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-}
-
-export interface Skill {
-  name: string;
-  icon: string;
-  category: 'Frontend' | 'Backend' | 'Tools';
-}
-
-export interface Project {
   title: string;
-  description: string;
-  image: string;
-  tags: string[];
+  entryPrice: number;
+  monthlyPrice?: number;
+  features: string[];
+  ctaText: string;
+  waMessage: string;
+  type: 'professional' | 'ai' | 'graphics';
 }
+
+export interface NicheItem {
+  id: string;
+  name: string;
+  description: string;
+  benefits: string[];
+  icon: string;
+}
+
+export type ViewState = 'home' | 'niches';

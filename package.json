@@ -1,21 +1,25 @@
+
 {
   "name": "caio-cutrim-portfolio",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
+  "homepage": "https://caiocturim95.github.io/caiodesigncutrim"
+ "https://caioiakal.github.io/portfolio",
   "dependencies": {
-    "@google/genai": "^1.41.0",
-    "react": "^19.2.4"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "lucide-react": "^0.450.0",
+    "framer-motion": "^11.0.0",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
-    "@vitejs/plugin-react": "^5.0.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "gh-pages": "^6.1.1"
   }
 }
